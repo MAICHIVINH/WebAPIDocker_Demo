@@ -1,0 +1,23 @@
+name: Test .NET
+
+on:
+  pull_request:
+    branches: [ "production", "master " ]
+
+jobs:
+  build-and-test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+    - name: Run Tests
+      run: dotnet test WebAPIDocker.Tests/WebAPIDocker.Tests.csproj --configuration Release --verbosity normal
